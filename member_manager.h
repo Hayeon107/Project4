@@ -10,8 +10,12 @@ private:
 public:
 	void initialize() {
 		readData(memberList);
-		login(memberList);
+		if (!memberList.empty()) {
+			//login			
+			logIn(memberList);
+		}
 	}
+
 
 	//방문자가 회원을 등록한다
 	void insertion() {
@@ -20,7 +24,7 @@ public:
 		cin.ignore(); // cin과 getline을 혼용하기 위해서 넣어줘야한다
 		cout << "Name : ";
 		string name;
-		cin >> name;
+		getline(cin, name);
 
 		cout << "Sex(F/M) : ";
 		char sex;
@@ -38,10 +42,11 @@ public:
 		cout << "Password : ";
 		string password;
 		cin >> password;
+		cin.ignore();
 
 		cout << "trainer : ";
 		string trainer;
-		cin >> trainer;
+		getline(cin, trainer);
 
 		cout << "session : ";
 		int session;
@@ -58,6 +63,7 @@ public:
 			out << password << endl;
 			out << trainer << endl;
 			out << session << "\n" << endl;
+			out.close();
 		}
 		else {
 			cout << "No such file" << endl;
@@ -70,14 +76,28 @@ public:
 
 		cout << "입력이 끝났습니다.\n";
 	}
-
+	void readFile() {
+		string line;
+		ifstream file("member.txt"); 
+		if (file.is_open()) {
+			while (getline(file, line)) {
+				cout << line << endl;
+			}
+			file.close();
+		}
+		else {
+			cout << "Unable to open file";
+		}
+	}
 	//회원정보를 읽어온다
 	void readData(list<Member>& memberList) {
+		memberList.clear();
+		string line;
 		ifstream file("member.txt"); //example 파일을 연다. 없으면 생성
 		if (file.is_open()) {
-			while (file) {
-				string name;
-				getline(file, name);
+			while (getline(file, line)) {
+				string name = line;
+				//getline(file, name);
 				char sex;
 				file.get(sex);
 				int age;
@@ -92,6 +112,7 @@ public:
 				int session;
 				file >> session;
 				file.ignore();
+				file.ignore();
 				Member member = Member(name, sex, age, goal, password, trainer, session);
 				if (!name.empty()) {
 					memberList.push_back(member);
@@ -101,12 +122,11 @@ public:
 			file.close();
 		}
 		else {
-			cout << "Unable to open file";
+			cout << "Unable to open file" << endl;
 		}
 	}
 
-	//회원 로그인
-	void login(list<Member> mList) {
+	void logIn(list<Member>& memberList) {
 		string name;
 		cout << "Name >> ";
 		cin >> name;
@@ -116,7 +136,7 @@ public:
 
 		bool found = false;
 
-		for (Member member : mList) {
+		for (Member member : memberList) {
 			if (member.getName() == name) {
 				if (member.getPassword() == password) {
 					// 이름과 입력한 비밀번호가 맞으면 로그인을 진행한다
@@ -128,16 +148,13 @@ public:
 				}
 				else {
 					cout << "Wrong password" << endl;
-					break;
+					return;
 				}
 			}
-			if (!found) {
-				cout << "No such member" << endl;
-				break;
-				//initialize();
-			}
 		}
+		if (!found) { cout << "No such member"<<endl; }
 	}
+
 
 
 	void search() {
@@ -148,17 +165,22 @@ public:
 
 
 	void start(Member member) {
-		int chooseNum;
-		cout << "1. Reserve Class" << endl;
-		cout << "2. Manage Membership" << endl;
-		cout << "> ";
-		cin >> chooseNum;
-		switch (chooseNum)
-		{
-		case 2:
-			cout << "Your left session is " << member.getSession() << endl;
-		default:
-			break;
+		while (true) {		
+			int chooseNum;
+			cout << "1. Reserve Class" << endl;
+			cout << "2. Manage Membership" << endl;
+			cout << "3. Log out" << endl;
+			cout << "> ";
+			cin >> chooseNum;
+			switch (chooseNum)
+			{
+			case 2:
+				cout << "Your left session is " << member.getSession() << endl;
+			case 3:
+				return;
+			default:
+				break;
+			}
 		}
 	}
 

@@ -1,0 +1,12 @@
+ike
+M
+23
+diet
+0000
+
+ham
+F
+23
+health
+0000
+
