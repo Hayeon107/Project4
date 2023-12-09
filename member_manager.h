@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "member.h";
+#include "member.h"
+#include "reserve_manager.h"
 #include<list>
 using namespace std;
 
@@ -154,15 +155,6 @@ public:
 		}
 		if (!found) { cout << "No such member"<<endl; }
 	}
-
-
-
-	void search() {
-		readData(memberList);
-		cout << "Let's search" <<endl;
-		printName(memberList);
-	}
-
 
 	void start(Member member) {
 		while (true) {		
