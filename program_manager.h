@@ -1,6 +1,7 @@
 #include <iostream>
 #include "member_manager.h"
 #include "trainer_manager.h"
+#include "visitor_manager.h"
 
 using namespace std;
 
@@ -8,6 +9,7 @@ class ProgramManager {
 private:
 	MemberManager memberManager;
 	TrainerManager trainerManager;
+	VisitorManager visitorManager;
 public:
 	void initialize() {
 		while (true) {
@@ -27,7 +29,7 @@ public:
 				trainerManager.initialize();
 				break;
 			case 3:
-				memberManager.insertion();
+				visitorManager.survey();
 				break;
 			case 4:
 				trainerManager.insertion();

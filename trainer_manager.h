@@ -147,8 +147,10 @@ public:
 				break;
 			case 2:
 				cout << "Today resevations : ";
-				trainer.printTodayReserve();
+				trainer.printTodayReserve(trainer.getTrainerName());
 				break;
+			case 3:
+				trainer.giveClass();
 			case 4:
 				return;
 			default:
@@ -157,4 +159,16 @@ public:
 		}
 	}
 
+	//major·Î Ãâ·Â
+	list<string> searchMajor(string major) {
+		list<string> trainers;
+		readData(trainerList);
+		for (Trainer trainer : trainerList) {
+			if (trainer.getMajor() == major) {
+				cout << trainer.getTrainerName() << " ";
+				trainers.push_back(trainer.getTrainerName());
+			}
+		}
+		return trainers;
+	}
 };

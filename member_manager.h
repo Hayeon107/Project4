@@ -8,6 +8,7 @@ using namespace std;
 class MemberManager {
 private:
 	list<Member> memberList;
+	ReserveManager reserveManager;
 public:
 	void initialize() {
 		readData(memberList);
@@ -17,79 +18,18 @@ public:
 		}
 	}
 
-
-	//방문자가 회원을 등록한다
-	void insertion() {
-		ofstream out("member.txt", ios::app);
-
-		cin.ignore(); // cin과 getline을 혼용하기 위해서 넣어줘야한다
-		cout << "Name : ";
-		string name;
-		getline(cin, name);
-
-		cout << "Sex(F/M) : ";
-		char sex;
-		cin >> sex;
-
-		cout << "Age : ";
-		int age;
-		cin >> age;
-		cin.ignore();
-
-		cout << "Goal : ";
-		string goal;
-		getline(cin, goal);
-
-		cout << "Password : ";
-		string password;
-		cin >> password;
-		cin.ignore();
-
-		cout << "trainer : ";
-		string trainer;
-		getline(cin, trainer);
-
-		cout << "session : ";
-		int session;
-		cin >> session;
-
-		// 회원객체 생성
-		Member member = Member(name, sex, age, goal, password, trainer,session);
-		// txt에 회원 저장
-		if (out.is_open()) {
-			out << name << endl;
-			out << sex << endl;
-			out << age << endl;
-			out << goal << endl;
-			out << password << endl;
-			out << trainer << endl;
-			out << session << "\n" << endl;
-			out.close();
-		}
-		else {
-			cout << "No such file" << endl;
-		}
-
-		// 리스트에 멤버 저장
-		memberList.push_back(member);
-		//그리고 트레이너의 회원 리스트에도 추가해야함
-
-
-		cout << "입력이 끝났습니다.\n";
-	}
-	void readFile() {
-		string line;
-		ifstream file("member.txt"); 
-		if (file.is_open()) {
-			while (getline(file, line)) {
-				cout << line << endl;
+	//트레이너의 멤버를 출력한다
+	void membersOfTrainer(string trainer) {
+		bool isMember=false;
+		for (Member member : memberList) {
+			if (member.getTrainer() == trainer) {
+				cout << member.getName() << " ";
+				isMember = true;
 			}
-			file.close();
-		}
-		else {
-			cout << "Unable to open file";
-		}
+		}if (!isMember) cout << "No member yet" << endl;
+		else cout << endl;
 	}
+
 	//회원정보를 읽어온다
 	void readData(list<Member>& memberList) {
 		memberList.clear();
@@ -114,12 +54,12 @@ public:
 				file >> session;
 				file.ignore();
 				file.ignore();
+
 				Member member = Member(name, sex, age, goal, password, trainer, session);
 				if (!name.empty()) {
 					memberList.push_back(member);
 				}
 			}
-			//printMember(plaveList);
 			file.close();
 		}
 		else {
@@ -166,8 +106,12 @@ public:
 			cin >> chooseNum;
 			switch (chooseNum)
 			{
+			case 1:
+				reserveManager.makeReserve(member.getName(), member.getTrainer());
+				break;
 			case 2:
 				cout << "Your left session is " << member.getSession() << endl;
+				break;
 			case 3:
 				return;
 			default:

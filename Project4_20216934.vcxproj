@@ -133,8 +133,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="member.h" />
+    <ClInclude Include="reserve.h" />
+    <ClInclude Include="reserve_manager.h" />
     <ClInclude Include="trainer.h" />
     <ClInclude Include="trainer_manager.h" />
+    <ClInclude Include="visitor_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
